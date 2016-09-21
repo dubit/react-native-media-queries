@@ -11,8 +11,7 @@ LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OT
 ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
-
-const Dimensions = require('react-native').Dimensions;
+const { Dimensions, Platform } = require('react-native');
 
 
 const computeStyles = (dimensions, base, ...extra) => {
@@ -62,7 +61,7 @@ export const createStyles = (base, ...extra) => {
   const { styles, update } = getStyles(base);
 
   styles.onLayout = fn => event => {
-    const dimensions = Dimensions.get('window');
+    const dimensions = Platform.OS === 'web' ? {width: window.innerWidth, height: window.innerHeight} : Dimensions.get('window');
     const computed = computeStyles(dimensions, base, ...extra);
     const changed  = update(computed);
     if (changed && fn) fn();
